@@ -429,7 +429,7 @@ write.table(cbind(seq(0,100,0.1),ww3m.l,ww3m.m,ww3m.u),file="trAFO-AFO-MedGas.tx
 
 dens<-30
 
-pdf("diff-curves-2.pdf",width=20,height=7)
+pdf("diff-curves-3.pdf",width=20,height=7)
 par(mfrow=c(1,3))
 plot(seq(0,100,0.1),ww1t.m,pch=".",ylim=c(-0.0004,0.0002),col="red",main="AFOf vs barefoot",ylab="Difference to barefoot (V)",xlab="% gait cycle")
 #lines(ww.u,col="red")
@@ -470,3 +470,11 @@ ixx<-which(is.na(ww3m.u) & is.na(ww3m.l))
 polygon(x=c((seq(0,100,0.1))[-ixx],rev(seq(0,100,0.1))[-ixx]),y=c(ww3m.u[-ixx],rev(ww3m.l[-ixx])),col="blue",density=dens,angle=135)
 legend("topright",c("TibAnt","MedGas"),lty=1,col=c("red","blue"))
 graphics.off()
+
+quantile(m.afo.bb.medgas,c(0.025,0.5,0.975),na.rm=TRUE)/mean(y[which(treat==1)])
+quantile(m.trafo.bb.medgas,c(0.025,0.5,0.975),na.rm=TRUE)/mean(y[which(treat==1)])
+quantile(m.trafo.afo.medgas,c(0.025,0.5,0.975),na.rm=TRUE)/mean(y[which(treat==2)])
+quantile(m.afo.bb.tibant,c(0.025,0.5,0.975),na.rm=TRUE)/mean(y[which(treat==1)])
+quantile(m.trafo.bb.tibant,c(0.025,0.5,0.975),na.rm=TRUE)/mean(y[which(treat==1)])
+quantile(m.trafo.afo.tibant,c(0.025,0.5,0.975),na.rm=TRUE)/mean(y[which(treat==2)])
+
