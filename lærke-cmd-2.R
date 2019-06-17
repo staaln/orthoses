@@ -1,5 +1,8 @@
 setwd("/Users/stalenygard/lærke/data-2/MedGas")
 
+
+set.seed(42);
+
 nm <- list.files(path="/Users/stalenygard/lærke/data-2/MedGas")[1:51]
 p<-length(nm)/3
 
@@ -41,7 +44,7 @@ coef(summary(res.mixed.m))
 i<-1
 
 
-B<-1000
+B<-10000
 m.afo.bb.medgas<-rep(NA,B)
 for (b in 1:B){
   s<-sample(1:p,p,replace=TRUE)
@@ -87,7 +90,7 @@ test<-intervals(res.mixed.m)
 format(test$fixed[3,]/mean(y)*100,digits=2)
 format(test$fixed[4,]/mean(y)*100,digits=3)
 
-B<-1000
+#B<-1000
 m.trafo.afo.medgas<-rep(NA,B)
 for (b in 1:B){
   s<-sample(1:p,p,replace=TRUE)
@@ -229,7 +232,7 @@ for (i in 1:3) A[,i]<-as.numeric(A[,i])
 tid<-rep(seq(0,100,0.1),9*p)
 patient<-rep(1:p,each=1001*9)
 
-B<-1000
+#B<-10000
 m.afo.bb.tibant<-rep(NA,B)
 for (b in 1:B){
   s<-sample(1:p,p,replace=TRUE)
@@ -423,3 +426,47 @@ write.table(cbind(seq(0,100,0.1),ww3t.l,ww3t.m,ww3t.u),file="trAFO-AFO-TibAnt.tx
 write.table(cbind(seq(0,100,0.1),ww1m.l,ww1m.m,ww1m.u),file="AFO-bb-MedGas.txt",sep="\t",row.names=FALSE)
 write.table(cbind(seq(0,100,0.1),ww2m.l,ww2m.m,ww2m.u),file="trAFO-bb-MedGas.txt",sep="\t",row.names=FALSE)
 write.table(cbind(seq(0,100,0.1),ww3m.l,ww3m.m,ww3m.u),file="trAFO-AFO-MedGas.txt",sep="\t",row.names=FALSE)
+
+dens<-30
+
+pdf("diff-curves-2.pdf",width=20,height=7)
+par(mfrow=c(1,3))
+plot(seq(0,100,0.1),ww1t.m,pch=".",ylim=c(-0.0004,0.0002),col="red",main="AFOf vs barefoot",ylab="Difference to barefoot (V)",xlab="% gait cycle")
+#lines(ww.u,col="red")
+#lines(ww.l,col="red")
+ixx<-which(is.na(ww1t.u) & is.na(ww1t.l))
+polygon(x=c((seq(0,100,0.1))[-ixx],rev(seq(0,100,0.1))[-ixx]),y=c(ww1t.u[-ixx],rev(ww1t.l[-ixx])),col="red",density=dens,angle=45)
+abline(h=0)
+points(seq(0,100,0.1),ww1m.m,pch=".",ylim=c(-0.0004,0.0004),col="blue")
+#lines(ww.u,col="red")
+#lines(ww.l,col="red")
+ixx<-which(is.na(ww1m.u) & is.na(ww1m.l))
+polygon(x=c((seq(0,100,0.1))[-ixx],rev(seq(0,100,0.1))[-ixx]),y=c(ww1m.u[-ixx],rev(ww1m.l[-ixx])),col="blue",density=dens,angle=135)
+legend("topright",c("TibAnt","MedGas"),lty=1,col=c("red","blue"))
+
+plot(seq(0,100,0.1),ww2t.m,pch=".",ylim=c(-0.0004,0.0002),col="red",main="AFOc vs barefoot",ylab="Difference to barefoot (V)",xlab="% gait cycle")
+#lines(ww.u,col="red")
+#lines(ww.l,col="red")
+ixx<-which(is.na(ww2t.u) & is.na(ww2t.l))
+polygon(x=c((seq(0,100,0.1))[-ixx],rev(seq(0,100,0.1))[-ixx]),y=c(ww2t.u[-ixx],rev(ww2t.l[-ixx])),col="red",density=dens,angle=45)
+abline(h=0)
+points(seq(0,100,0.1),ww2m.m,pch=".",ylim=c(-0.0004,0.0004),col="blue")
+#lines(ww.u,col="red")
+#lines(ww.l,col="red")
+ixx<-which(is.na(ww2m.u) & is.na(ww2m.l))
+polygon(x=c((seq(0,100,0.1))[-ixx],rev(seq(0,100,0.1))[-ixx]),y=c(ww2m.u[-ixx],rev(ww2m.l[-ixx])),col="blue",density=dens,angle=135)
+legend("topright",c("TibAnt","MedGas"),lty=1,col=c("red","blue"))
+
+plot(seq(0,100,0.1),ww3t.m,pch=".",ylim=c(-0.0004,0.0002),col="red",main="AFOc vs AFOf",ylab="Difference to AFO (V)",xlab="% gait cycle")
+#lines(ww.u,col="red")
+#lines(ww.l,col="red")
+ixx<-which(is.na(ww3t.u) & is.na(ww3t.l))
+polygon(x=c((seq(0,100,0.1))[-ixx],rev(seq(0,100,0.1))[-ixx]),y=c(ww3t.u[-ixx],rev(ww3t.l[-ixx])),col="red",density=dens,angle=45)
+abline(h=0)
+points(seq(0,100,0.1),ww3m.m,pch=".",ylim=c(-0.0004,0.0004),col="blue")
+#lines(ww.u,col="red")
+#lines(ww.l,col="red")
+ixx<-which(is.na(ww3m.u) & is.na(ww3m.l))
+polygon(x=c((seq(0,100,0.1))[-ixx],rev(seq(0,100,0.1))[-ixx]),y=c(ww3m.u[-ixx],rev(ww3m.l[-ixx])),col="blue",density=dens,angle=135)
+legend("topright",c("TibAnt","MedGas"),lty=1,col=c("red","blue"))
+graphics.off()
